@@ -173,7 +173,7 @@ def pretrain_mae(dataset: str,
     transform = MAETransform(**transform_kwargs)
     
     # Loading unlabeled image dataset from folder
-    dataset = torchvision.datasets.ImageFolder(root=dataset, transform=transform)
+    dataset = ImageDataset(root=dataset, transform=transform)
     
     if local_checkpoint:
         backbone = torchvision.models.get_model(vit_model)
