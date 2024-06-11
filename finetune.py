@@ -5,7 +5,7 @@ from torch.optim.lr_scheduler import CyclicLR, ConstantLR, SequentialLR, LinearL
 from lightly.models import utils
 from lightly.models.modules import masked_autoencoder
 from lightly.transforms.mae_transform import MAETransform
-from masked_autoencoder.dataset import ImageDataset
+from dataset import ImageDataset
 from timm.models.vision_transformer import Block
 from torchvision.transforms import v2
 import sys
