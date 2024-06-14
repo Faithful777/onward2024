@@ -362,8 +362,9 @@ def pretrain_mae(dataset: str,
         for batch in dataloader:
             views = batch[0]
             images = views[0].to(device)  # views contains only a single view
-            _, predictions, targets = model(images)
-            loss = criterion(predictions, targets)
+            #_, predictions, targets = model(images)
+            #loss = criterion(predictions, targets)
+            loss, _, _ = model(images)
             total_loss += loss.detach()
             loss.backward()
             optimizer.step()
