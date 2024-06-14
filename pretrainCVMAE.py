@@ -237,14 +237,15 @@ class MaskedAutoencoderConvViT(nn.Module):
         loss = self.forward_loss(imgs, pred, mask)
         return loss, pred, mask
 
-def convmae_convvit_base_patch16_dec512d8b(**kwargs):
+def convmae_convvit_base_patch16_dec512d8b(starting_weights,**kwargs):
     model = MaskedAutoencoderConvViT(
         img_size=[224, 56, 28], patch_size=[4, 2, 2], embed_dim=[256, 384, 768], depth=[2, 2, 11], num_heads=12,
         decoder_embed_dim=512, decoder_depth=8, decoder_num_heads=16,
         mlp_ratio=[4, 4, 4], norm_layer=partial(nn.LayerNorm, eps=1e-6), **kwargs)
-    checkpoint = torch.load(f="ViT_L_16_Weights.DEFAULT",
-                              map_location=torch.device('cpu'), **kwargs)
-    model.load_state_dict(checkpoint['state_dict'], strict=False)
+    checkpoint = torch.load(starting_weights,
+                              map_location=torch.device('cpu'))
+    print(checkpoint)
+    model.load_state_dict(checkpoint, strict=False)
 
     return model
     
@@ -333,7 +334,7 @@ def pretrain_mae(dataset: str,
     dataset = torchvision.datasets.ImageFolder(root=dataset, transform=transform)
     
     
-    model = convmae_convvit_base_patch16_dec512d8b(f=starting_weights)  # decoder: 512 dim, 8 blocks
+    model = convmae_convvit_base_patch16_dec512d8b(starting_weights)  # decoder: 512 dim, 8 blocks
 
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
