@@ -245,9 +245,22 @@ def convmae_convvit_base_patch16_dec512d8b(starting_weights,**kwargs):
     checkpoint = torch.load(starting_weights,
                               map_location=torch.device('cpu'))
     #print(checkpoint)
-    model.load_state_dict(checkpoint, strict=False)
-
-    return model
+    #model.load_state_dict(checkpoint, strict=False)
+    # Load the weights into the model, matching parameter names
+    state_dict = model.state_dict()
+    for name, param in checkpoint.items():
+        for name,param2 in param.items():
+            print(f'this is the{name}')
+            if name in state_dict:
+                if state_dict[name].shape == param2.shape:
+                    state_dict[name].copy_(param2)
+                    print(f"Loaded {name} from checkpoint")
+                else:
+                    print(f"Shape mismatch for {name}: expected {state_dict[name].shape}, got {param2.shape}")
+            else:
+                print(f"Skipping {name} as it is not in the model")
+    
+        return model
     
 def pretrain_mae(dataset: str,
                  output: str = 'checkpoints/ViT_L_16_SEISMIC.pth',
