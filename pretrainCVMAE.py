@@ -244,7 +244,7 @@ def convmae_convvit_base_patch16_dec512d8b(starting_weights,**kwargs):
         mlp_ratio=[4, 4, 4], norm_layer=partial(nn.LayerNorm, eps=1e-6), **kwargs)
     checkpoint = torch.load(starting_weights,
                               map_location=torch.device('cpu'))
-    print(checkpoint)
+    #print(checkpoint)
     model.load_state_dict(checkpoint, strict=False)
 
     return model
