@@ -162,8 +162,8 @@ class MaskedAutoencoderConvViT(nn.Module):
     def forward_encoder(self, x, mask_ratio):
         # embed patches
         ids_keep, mask, ids_restore = self.random_masking(x, mask_ratio)
-        mask_for_patch1 = mask.reshape(-1, 14, 14).unsqueeze(-1).repeat(1, 1, 1, 16).reshape(-1, 14, 14, 4, 4).permute(0, 1, 3, 2, 4).reshape(x.shape[0], 56, 56).unsqueeze(1)
-        mask_for_patch2 = mask.reshape(-1, 14, 14).unsqueeze(-1).repeat(1, 1, 1, 4).reshape(-1, 14, 14, 2, 2).permute(0, 1, 3, 2, 4).reshape(x.shape[0], 28, 28).unsqueeze(1)
+        mask_for_patch1 = mask.reshape(-1, 14, 14).unsqueeze(-1).repeat(1, 1, 1, 16).reshape(-1, 14, 14, 4, 4).permute(0, 1, 3, 2, 4).reshape(x.shape[0], 224, 224).unsqueeze(1)
+        mask_for_patch2 = mask.reshape(-1, 14, 14).unsqueeze(-1).repeat(1, 1, 1, 4).reshape(-1, 14, 14, 2, 2).permute(0, 1, 3, 2, 4).reshape(x.shape[0], 112, 112).unsqueeze(1)
         x = self.patch_embed1(x)
         for blk in self.blocks1:
             x = blk(x, 1 - mask_for_patch1)
