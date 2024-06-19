@@ -239,7 +239,7 @@ class MaskedAutoencoderConvViT(nn.Module):
 
 def convmae_convvit_base_patch16_dec512d8b(starting_weights,**kwargs):
     model = MaskedAutoencoderConvViT(
-        img_size=[224, 56, 28], patch_size=[4, 2, 2], embed_dim=[256, 384, 768], depth=[2, 2, 11], num_heads=12,
+        img_size=[1024, 256, 128], patch_size=[4, 2, 2], embed_dim=[256, 384, 768], depth=[2, 2, 11], num_heads=12,
         decoder_embed_dim=512, decoder_depth=8, decoder_num_heads=16,
         mlp_ratio=[4, 4, 4], norm_layer=partial(nn.LayerNorm, eps=1e-6), **kwargs)
     checkpoint = torch.load(starting_weights,
@@ -341,7 +341,7 @@ def pretrain_mae(dataset: str,
         
         return linear_scheduler, cyclic_scheduler
     
-    transform = MAETransform(**transform_kwargs)
+    transform = MAETransform(input_size=1024,**transform_kwargs)
     
     # Loading unlabeled image dataset from folder
     dataset = torchvision.datasets.ImageFolder(root=dataset, transform=transform)
