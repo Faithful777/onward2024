@@ -162,8 +162,8 @@ class MaskedAutoencoderConvViT(nn.Module):
     def forward_encoder(self, x, mask_ratio):
         # embed patches
         ids_keep, mask, ids_restore = self.random_masking(x, mask_ratio)
-        mask_for_patch1 = mask.reshape(-1, 14, 14).unsqueeze(-1).repeat(1, 1, 1, 16).reshape(-1, 14, 14, 4, 4).permute(0, 1, 3, 2, 4).reshape(x.shape[0], 112, 112).unsqueeze(1)
-        mask_for_patch2 = mask.reshape(-1, 14, 14).unsqueeze(-1).repeat(1, 1, 1, 4).reshape(-1, 14, 14, 2, 2).permute(0, 1, 3, 2, 4).reshape(x.shape[0], 56, 56).unsqueeze(1)
+        mask_for_patch1 = mask.reshape(-1, 14, 14).unsqueeze(-1).repeat(1, 1, 1, 16).reshape(-1, 14, 14, 4, 4).permute(0, 1, 3, 2, 4).reshape(x.shape[0], 56, 56).unsqueeze(1)
+        mask_for_patch2 = mask.reshape(-1, 14, 14).unsqueeze(-1).repeat(1, 1, 1, 4).reshape(-1, 14, 14, 2, 2).permute(0, 1, 3, 2, 4).reshape(x.shape[0], 28, 28).unsqueeze(1)
         x = self.patch_embed1(x)
         for blk in self.blocks1:
             x = blk(x, 1 - mask_for_patch1)
@@ -239,7 +239,7 @@ class MaskedAutoencoderConvViT(nn.Module):
 
 def convmae_convvit_base_patch16_dec512d8b(starting_weights,**kwargs):
     model = MaskedAutoencoderConvViT(
-        img_size=[448, 112, 56], patch_size=[4, 2, 2], embed_dim=[256, 384, 768], depth=[2, 2, 11], num_heads=12,
+        img_size=[224, 56, 28], patch_size=[4, 2, 2], embed_dim=[256, 384, 768], depth=[2, 2, 11], num_heads=12,
         decoder_embed_dim=512, decoder_depth=8, decoder_num_heads=16,
         mlp_ratio=[4, 4, 4], norm_layer=partial(nn.LayerNorm, eps=1e-6), **kwargs)
     checkpoint = torch.load(starting_weights,
@@ -341,7 +341,7 @@ def pretrain_mae(dataset: str,
         
         return linear_scheduler, cyclic_scheduler
     
-    transform = MAETransform(input_size=448,**transform_kwargs)
+    transform = MAETransform(input_size=224,**transform_kwargs)
     
     # Loading unlabeled image dataset from folder
     dataset = torchvision.datasets.ImageFolder(root=dataset, transform=transform)
