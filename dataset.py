@@ -39,6 +39,7 @@ class ImageDataset(Dataset):
         image = self.transform(image)
         label = np.load(label_name)
         label = torch.from_numpy(label)
+        print(image.shape)
         print(label.shape)
         label = resizer(label)
         label = self.target_transform(label)
