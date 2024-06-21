@@ -220,7 +220,7 @@ def finetune_vit(dataset: str,
                 neck, head)
     transform = MAETransform(**transform_kwargs)
     
-    dataset = ImageDataset(root_dir=dataset, img_size=model.img_size, transform=transform, target_transform=transform)
+    dataset = ImageDataset(root_dir=dataset, img_size=224, transform=transform, target_transform=transform)
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
