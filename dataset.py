@@ -40,9 +40,9 @@ class ImageDataset(Dataset):
         label = np.load(label_name)
         label = np.expand_dims(label, axis=0)
         #label = torch.from_numpy(label)
-        #label = label.unsqueeze(0)
+        label = Image.fromarray(label)
         #print(image.shape)
-        print(label.shape)
+        #print(label.shape)
         label = resizer(label)
         label = self.target_transform(label)
         return image, label
