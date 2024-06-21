@@ -40,7 +40,7 @@ class ImageDataset(Dataset):
         label = np.load(label_name)
         print(label.shape)
         #label = np.expand_dims(label, axis=0)
-       # label = torch.from_numpy(label)
+        label = torch.from_numpy(label)
         #label = Image.fromarray(label)
         #print(image.shape)
         #print(label.shape)
