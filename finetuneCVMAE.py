@@ -229,7 +229,7 @@ def finetune_vit(dataset: str,
     label_folder = os.path.join(dataset, 'label')
     image_filenames = [file for file in os.listdir(image_folder) if file.endswith(('.JPG','.jpg','.jpeg', '.JPEG'))]
     label_filenames = [file for file in os.listdir(label_folder) if file.endswith(('.npy'))]
-    dataset = MyDataset(image_filenames, label_filenames)
+    dataset = MyDataset(image_filenames, label_filenames, dataset)
                      
     #dataset = ImageDataset(root_dir=dataset, img_size=224, transform=transform, target_transform=transform, file_list=image_filenames)
 
