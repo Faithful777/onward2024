@@ -38,6 +38,7 @@ class MyDataset(Dataset):
         return image, mask
 
     def __getitem__(self, index):
+        print(self.image_paths[index])
         image = Image.open(self.image_paths[index])
         mask = label = np.load(self.target_paths[index])
         x, y = self.transform(image, mask)
