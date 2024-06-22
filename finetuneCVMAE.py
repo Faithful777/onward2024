@@ -219,8 +219,12 @@ def finetune_vit(dataset: str,
     #print(model)
     
     transform = MAETransform(**transform_kwargs)
-                     
-    dataset = MyDataset(image_paths=dataset+'image/', target_paths=dataset+'label/')
+
+    image_paths=dataset+'image'
+    target_paths=dataset+'label'
+    print(image_paths)
+    print(target_paths)
+    dataset = MyDataset(image_paths, target_paths)
                      
     #dataset = ImageDataset(root_dir=dataset, img_size=224, transform=transform, target_transform=transform)
 
