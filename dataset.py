@@ -26,6 +26,7 @@ class ImageDataset(Dataset):
         self.transform = transform
         self.target_transform = target_transform
         self.img_size = img_size
+        self.resizer = v2.Compose([v2.Resize((self.img_size))])
         
     def __len__(self):
         return len(self.image_filenames)
@@ -34,9 +35,9 @@ class ImageDataset(Dataset):
         img_name = os.path.join(self.image_folder, self.image_filenames[idx])
         image_id = os.path.splitext(self.image_filenames[idx])[0]  # Extract ID without extension
         label_name = os.path.join(self.label_folder, f'{image_id}_gt.npy')
-        resizer = v2.Compose([v2.Resize((self.img_size))])
+        #resizer = v2.Compose([v2.Resize((self.img_size))])
         image = Image.open(img_name).convert('RGB')
-        image = resizer(image)
+        image = self.resizer(image)
         image = self.transform(image)
         label = np.load(label_name)
         print(label.shape)
@@ -46,6 +47,6 @@ class ImageDataset(Dataset):
         #label = Image.fromarray(label)
         #print(image.shape)
         #print(label.shape)
-        label = resizer(label)
+        label = self.resizer(label)
         label = self.target_transform(label)
         return image, label
