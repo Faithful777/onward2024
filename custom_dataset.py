@@ -45,8 +45,9 @@ class MyDataset(Dataset):
         image_folder = os.path.join(self.path, 'image')
         label_folder = os.path.join(self.path, 'label')
         image = Image.open(os.path.join(image_folder, self.image_paths[index]))
-        mask = label = np.load(os.path.join(label_folder, self.target_paths[index]))
-        x, y = self.transform(image, mask)
+        label = np.load(os.path.join(label_folder, self.target_paths[index]))
+        label = TF.to_tensor(label)
+        x, y = self.transform(image, label)
         return x, y
 
     def __len__(self):
