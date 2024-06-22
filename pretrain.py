@@ -213,6 +213,8 @@ def pretrain_mae(dataset: str,
     for epoch in range(total_epochs):
         total_loss = .0
         for batch in dataloader:
+            print(batch)
+            print(f"batch shape is: {batch.shape}")
             views = batch[0]
             images = views[0].to(device)  # views contains only a single view
             predictions, targets = model(images)
