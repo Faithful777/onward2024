@@ -229,7 +229,7 @@ def finetune_vit(dataset: str,
                              std=[0.229, 0.224, 0.225])
     ])
                      
-    dataset = ImageDataset(root_dir=dataset, img_size=224, transform=transform, target_transform=target_transform)
+    dataset = ImageDataset(root_dir=dataset, img_size=224, transform=transform, target_transform=transform)
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
