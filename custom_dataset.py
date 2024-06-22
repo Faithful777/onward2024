@@ -36,7 +36,7 @@ class MyDataset(Dataset):
 
         # Transform to tensor
         image = TF.to_tensor(image)
-        mask = TF.to_tensor(mask)
+        #mask = TF.to_tensor(mask)
         return image, mask
 
     def __getitem__(self, index):
