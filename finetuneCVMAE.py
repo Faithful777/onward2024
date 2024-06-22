@@ -7,6 +7,7 @@ from lightly.models import utils
 from lightly.models.modules import masked_autoencoder
 from lightly.transforms.mae_transform import MAETransform
 from dataset import ImageDataset
+from custom_dataset import MyDataset
 from timm.models.vision_transformer import Block
 from torchvision.transforms import v2
 import sys
@@ -219,7 +220,9 @@ def finetune_vit(dataset: str,
     
     transform = MAETransform(**transform_kwargs)
                      
-    dataset = ImageDataset(root_dir=dataset, img_size=224, transform=transform, target_transform=transform)
+    dataset = MyDataset(image_paths=dataset+'/image/', target_paths=dataset+'/label/')
+                     
+    #dataset = ImageDataset(root_dir=dataset, img_size=224, transform=transform, target_transform=transform)
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
