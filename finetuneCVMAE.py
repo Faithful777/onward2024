@@ -217,17 +217,7 @@ def finetune_vit(dataset: str,
     model = SegmentationModel(backbone, neck, head)# removed checkpoints_path
     #print(model)
     
-    model = SegmentationModel(backbone, 
-                neck, head)
     transform = MAETransform(**transform_kwargs)
-
-    # Data augementation pipline
-    target_transform = transforms.Compose([
-        transforms.Resize((224, 224)),
-        #EnhanceContrast(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                             std=[0.229, 0.224, 0.225])
-    ])
                      
     dataset = ImageDataset(root_dir=dataset, img_size=224, transform=transform, target_transform=transform)
 
