@@ -224,9 +224,12 @@ def finetune_vit(dataset: str,
     target_paths=dataset+'label'
     print(image_paths)
     print(target_paths)
-    dataset = MyDataset(image_paths, target_paths)
+
+    image_folder = os.path.join(dataset, 'image')
+    image_filenames = [file for file in os.listdir(image_folder) if file.endswith(('.JPG','.jpg','.jpeg', '.JPEG'))]
+    #dataset = MyDataset(image_paths, target_paths)
                      
-    #dataset = ImageDataset(root_dir=dataset, img_size=224, transform=transform, target_transform=transform)
+    dataset = ImageDataset(root_dir=dataset, img_size=224, transform=transform, target_transform=transform, file_list=image_filenames)
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
