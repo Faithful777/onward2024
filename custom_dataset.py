@@ -1,3 +1,4 @@
+import os
 import random
 import numpy as np
 from PIL import Image
@@ -6,9 +7,10 @@ import torchvision.transforms.functional as TF
 from torch.utils.data import Dataset
 
 class MyDataset(Dataset):
-    def __init__(self, image_paths, target_paths, train=True):
+    def __init__(self, image_paths, target_paths, path, train=True):
         self.image_paths = image_paths
         self.target_paths = target_paths
+        self.path = path
 
     def transform(self, image, mask):
         # Resize
@@ -39,8 +41,9 @@ class MyDataset(Dataset):
 
     def __getitem__(self, index):
         print(self.image_paths[index])
-        image = Image.open(self.image_paths[index])
-        mask = label = np.load(self.target_paths[index])
+        print(self.target_paths[index])
+        image = Image.open(os.path.join(self.path, self.image_paths[index]))
+        mask = label = np.load(os.path.join(self.path, self.target_paths[index]))
         x, y = self.transform(image, mask)
         return x, y
 
