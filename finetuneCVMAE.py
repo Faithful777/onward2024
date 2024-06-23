@@ -50,6 +50,8 @@ class SegmentationModel(nn.Module):
         criterion = nn.CrossEntropyLoss(ignore_index=0)
         # Ensure the label has the right shape
         label = label.squeeze(1)  # Squeeze the channel dimension if it exists
+        print(f"label shape is: {label.shape}")
+        print(f"out shape is: {out.shape}")
         loss = criterion(out, label)
         return out, loss
     
