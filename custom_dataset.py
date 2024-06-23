@@ -42,11 +42,12 @@ class MyDataset(Dataset):
 
     def __getitem__(self, index):
         print(self.image_paths[index])
-        print(self.target_paths[index])
+        print(os.path.join(image_folder, os.path.splitext(self.image_paths[index])[0] + '.npy'))
         image_folder = os.path.join(self.path, 'image')
-        label_folder = os.path.join(self.path, 'label')
+        #label_folder = os.path.join(self.path, 'label')
         image = Image.open(os.path.join(image_folder, self.image_paths[index]))
-        label = np.load(os.path.join(label_folder, self.target_paths[index]))
+        label = np.load(new_path = os.path.join(image_folder, os.path.splitext(self.image_paths[index])[0] + '.npy'))
+        #label = np.load(os.path.join(label_folder, self.target_paths[index]))
         label = np.expand_dims(label, axis=0)
         label = torch.from_numpy(label)
         x, y = self.transform(image, label)
