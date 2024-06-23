@@ -264,6 +264,7 @@ def finetune_vit(dataset: str,
             loss, pred = model(images, labels)
             total_loss += loss.detach()
             print(f"loss is: {loss}")
+            print(loss.shape)
             loss.backward()
             optimizer.step()
             if cyclic_schedule:
