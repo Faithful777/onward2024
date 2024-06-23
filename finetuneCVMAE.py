@@ -43,7 +43,6 @@ class SegmentationModel(nn.Module):
     def forward(self, x):
         input_size = x.size()[2:]  # Store the input spatial dimensions
         backbone_features = self.backbone(x)
-        print(len(backbone_features))
         neck_features = self.neck(backbone_features)
         out = self.decode_head(neck_features)
         out = F.interpolate(out, size=input_size, mode='bilinear', align_corners=False)  # Upsample to match input size
@@ -67,9 +66,7 @@ def finetune_vit(dataset: str,
                  n_epochs: int = 50,
                  cyclic_schedule: bool = False,
                  cyclic_step_size: int = 1000,
-                 #decoder_dim: int = 1024,
                  freeze_backbone: bool = True,
-                 #freeze_projection: bool = True,
                  shell_call: bool = False) -> dict:
     """
     Fine-tune a Vision Transformer (ViT) model on a custom image dataset using a Masked Autoencoder (MAE) backbone.
@@ -228,9 +225,8 @@ def finetune_vit(dataset: str,
     label_folder = os.path.join(dataset, 'label')
     image_filenames = [file for file in os.listdir(image_folder) if file.endswith(('.JPG','.jpg','.jpeg', '.JPEG'))]
     label_filenames = [file for file in os.listdir(label_folder) if file.endswith(('.npy'))]
+    
     dataset = MyDataset(image_filenames, label_filenames, dataset)
-                     
-    #dataset = ImageDataset(root_dir=dataset, img_size=224, transform=transform, target_transform=transform, file_list=image_filenames)
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
@@ -260,18 +256,12 @@ def finetune_vit(dataset: str,
             optimizer.zero_grad()
             out = model(images)
         
-            print(f"Outputs range: {out.min().item()} to {out.max().item()}")
             criterion = nn.CrossEntropyLoss()
             # Ensure the label has the right shape
-            label = labels.squeeze(1)  # Squeeze the channel dimension if it exists
-            print(f"Labels unique values: {torch.unique(label)}")
-            print(f"label shape is: {label.shape}")
-            print(f"out shape is: {out.shape}")
+            label = labels.squeeze(1)  # Squeeze the channel dimension
             loss = criterion(out, label)
             
             total_loss += loss.detach()
-            print(f"loss is: {loss}")
-            print(loss.shape)
             loss.backward()
             optimizer.step()
             if cyclic_schedule:
@@ -311,10 +301,8 @@ def finetune_vit(dataset: str,
 @click.option('--linear-schedule', type=bool, default=False, is_flag=True, help='Use linear LR schedule after warmup period')
 @click.option('--end-factor', type=float, default=0.5, help='Final decay factor for linear LR schedule')
 @click.option('--cyclic-schedule', type=bool, default=False, is_flag=True, help='Use pre-optimized cyclic LR schedule')
-@click.option('--cyclic-step-size', type=int, default=1000, help='Number for iterations for half of LR cycle')
-#@click.option('--decoder-dim', type=int, default=1024, help='Dimension of the decoder tokens')       
-@click.option('--freeze-backbone', type=bool, default=False, is_flag=True, help='Freeze segementation backone') 
-#@click.option('--freeze-embeddings', type=bool, default=False, is_flag=True, help='Freeze positional embedding layer of ViT')  
+@click.option('--cyclic-step-size', type=int, default=1000, help='Number for iterations for half of LR cycle')   
+@click.option('--freeze-backbone', type=bool, default=False, is_flag=True, help='Freeze segementation backone')
 def main(dataset, output, transform_min_scale, transform_normalize, vit_model,
          local_checkpoint, starting_weights, batch_size, n_workers, optimizer, 
          lr, optimizer_params, n_epochs, warmup_epochs, start_factor, linear_schedule,
