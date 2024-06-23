@@ -1,4 +1,5 @@
 import os
+import torch
 import random
 import numpy as np
 from PIL import Image
@@ -46,7 +47,7 @@ class MyDataset(Dataset):
         label_folder = os.path.join(self.path, 'label')
         image = Image.open(os.path.join(image_folder, self.image_paths[index]))
         label = np.load(os.path.join(label_folder, self.target_paths[index]))
-        label = TF.to_tensor(label)
+        label = torch.from_numpy(label)
         x, y = self.transform(image, label)
         return x, y
 
