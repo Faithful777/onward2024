@@ -260,11 +260,12 @@ def finetune_vit(dataset: str,
         for images, labels in dataloader:
             images = images.to(device)
             labels = labels.to(device).long()
+            optimizer.zero_grad()
             loss, pred = model(images, labels)
             total_loss += loss.detach()
+            print(f"loss is: {loss}")
             loss.backward()
             optimizer.step()
-            optimizer.zero_grad()
             if cyclic_schedule:
                 cyclic_scheduler.step()
         avg_loss = total_loss / len(dataloader)
