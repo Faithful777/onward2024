@@ -135,7 +135,7 @@ def finetune_vit(dataset: str,
     img_size = [224, 56, 28]
     patch_size = [4, 2, 2]
     in_chans = 3
-    num_classes = 5
+    num_classes = 3
     embed_dim = [256, 384, 768]
     depth = [2, 2, 11]
     num_heads = 12
