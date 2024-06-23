@@ -259,7 +259,7 @@ def finetune_vit(dataset: str,
         total_loss = .0
         for images, labels in dataloader:
             images = images.to(device)
-            labels = labels.to(device)
+            labels = labels.to(device).long()
             loss, pred = model(images, labels)
             total_loss += loss.detach()
             loss.backward()
