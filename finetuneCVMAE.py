@@ -10,6 +10,7 @@ from dataset import ImageDataset
 from custom_dataset import MyDataset
 from timm.models.vision_transformer import Block
 from torchvision.transforms import v2
+from tqdm import tqdm
 import sys
 import os
 import click
@@ -250,7 +251,7 @@ def finetune_vit(dataset: str,
     print("Entering Training Loop")
     for epoch in range(total_epochs):
         total_loss = .0
-        for images, labels in dataloader:
+        for images, labels in tqdm(dataloader):
             images = images.to(device)
             labels = labels.to(device).long()
             optimizer.zero_grad()
