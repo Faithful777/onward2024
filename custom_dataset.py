@@ -46,7 +46,7 @@ class MyDataset(Dataset):
         image_folder = os.path.join(self.path, 'image')
         #label_folder = os.path.join(self.path, 'label')
         image = Image.open(os.path.join(image_folder, self.image_paths[index]))
-        label = np.load(new_path = os.path.join(image_folder, os.path.splitext(self.image_paths[index])[0] + '.npy'))
+        label = np.load(os.path.join(image_folder, os.path.splitext(self.image_paths[index])[0] + '.npy'))
         print(os.path.join(image_folder, os.path.splitext(self.image_paths[index])[0] + '.npy'))
         #label = np.load(os.path.join(label_folder, self.target_paths[index]))
         label = np.expand_dims(label, axis=0)
