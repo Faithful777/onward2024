@@ -40,22 +40,15 @@ class SegmentationModel(nn.Module):
         self.neck = neck
         self.decode_head = decode_head
 
-    def forward(self, x, label):
+    def forward(self, x):
         input_size = x.size()[2:]  # Store the input spatial dimensions
         backbone_features = self.backbone(x)
         print(len(backbone_features))
         neck_features = self.neck(backbone_features)
         out = self.decode_head(neck_features)
         out = F.interpolate(out, size=input_size, mode='bilinear', align_corners=False)  # Upsample to match input size
-        print(f"Outputs range: {out.min().item()} to {out.max().item()}")
-        criterion = nn.CrossEntropyLoss()
-        # Ensure the label has the right shape
-        label = label.squeeze(1)  # Squeeze the channel dimension if it exists
-        print(f"Labels unique values: {torch.unique(label)}")
-        print(f"label shape is: {label.shape}")
-        print(f"out shape is: {out.shape}")
-        loss = criterion(out, label)
-        return out, loss
+
+        return out
     
 def finetune_vit(dataset: str,
                  output: str = 'checkpoints/ViT_L_16_pretrained.pth',
@@ -265,7 +258,17 @@ def finetune_vit(dataset: str,
             images = images.to(device)
             labels = labels.to(device).long()
             optimizer.zero_grad()
-            loss, pred = model(images, labels)
+            out = model(images)
+        
+            print(f"Outputs range: {out.min().item()} to {out.max().item()}")
+            criterion = nn.CrossEntropyLoss()
+            # Ensure the label has the right shape
+            label = labels.squeeze(1)  # Squeeze the channel dimension if it exists
+            print(f"Labels unique values: {torch.unique(label)}")
+            print(f"label shape is: {label.shape}")
+            print(f"out shape is: {out.shape}")
+            loss = criterion(out, label)
+            
             total_loss += loss.detach()
             print(f"loss is: {loss}")
             print(loss.shape)
