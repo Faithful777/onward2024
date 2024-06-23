@@ -47,9 +47,11 @@ class SegmentationModel(nn.Module):
         neck_features = self.neck(backbone_features)
         out = self.decode_head(neck_features)
         out = F.interpolate(out, size=input_size, mode='bilinear', align_corners=False)  # Upsample to match input size
+        print(f"Outputs range: {out.min().item()} to {out.max().item()}")
         criterion = nn.CrossEntropyLoss()
         # Ensure the label has the right shape
         label = label.squeeze(1)  # Squeeze the channel dimension if it exists
+        print(f"Labels unique values: {torch.unique(labels)}")
         print(f"label shape is: {label.shape}")
         print(f"out shape is: {out.shape}")
         loss = criterion(out, label)
