@@ -40,7 +40,7 @@ class SegmentationModel(nn.Module):
         self.neck = neck
         self.decode_head = decode_head
 
-    def forward(self, x,label):
+    def forward(self, x, label):
         input_size = x.size()[2:]  # Store the input spatial dimensions
         backbone_features = self.backbone(x)
         print(len(backbone_features))
@@ -255,10 +255,10 @@ def finetune_vit(dataset: str,
     print("Entering Training Loop")
     for epoch in range(total_epochs):
         total_loss = .0
-        for batch in dataloader:
-            views = batch[0]
-            images = views[0].to(device)  # views contains only a single view
-            loss, pred = model(images)
+        for images, labels in dataloader:
+            images = images.to(device)
+            labels = labels.to(device)
+            loss, pred = model(images, labels)
             total_loss += loss.detach()
             loss.backward()
             optimizer.step()
