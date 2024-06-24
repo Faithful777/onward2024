@@ -116,7 +116,9 @@ def inference_vit(dataset: str,
         for images, image_names in tqdm(dataloader):
             images = images.to(device)
             outputs = model(images)
+            outputs = torch.argmax(outputs, dim=1)
             outputs = F.interpolate(outputs, size=(1024, 1360), mode='bilinear', align_corners=False)
+            print(f"output shape is:{outputs.shape}")
             outputs = outputs.cpu().numpy()
             
             for output, image_name in zip(outputs, image_names):
