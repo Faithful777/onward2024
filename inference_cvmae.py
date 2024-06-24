@@ -103,7 +103,7 @@ def inference_vit(dataset: str,
     image_folder = os.path.join(dataset, 'image')
     image_filenames = [file for file in os.listdir(image_folder) if file.lower().endswith(('.jpg', '.jpeg'))]
     
-    dataset = MyDataset(image_filenames, None, dataset, transform)
+    dataset = InferDataset(image_filenames, None, dataset)
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
