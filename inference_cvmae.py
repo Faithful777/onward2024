@@ -120,7 +120,7 @@ def inference_vit(dataset: str,
             outputs = outputs.cpu().numpy()
             
             for output, image_name in zip(outputs, image_names):
-                save_path = os.path.join(output, f"{os.path.splitext(image_name)[0]}_pred.npy")
+                save_path = os.path.join(output, f"{os.path.splitext(image_name)[0]}_pred")
                 np.save(save_path, output)
 
 @click.command(context_settings={'show_default': True})
