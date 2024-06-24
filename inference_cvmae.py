@@ -26,7 +26,7 @@ class SegmentationModel(nn.Module):
         return out
 
 def inference_vit(dataset: str,
-                  output: str,
+                  output_path: str,
                   transform_kwargs: dict = {'min_scale': 0.2, 'normalize': False},
                   vit_model: str = 'ViT_L_16', 
                   starting_weights: str = "ViT_L_16_Weights.DEFAULT", 
@@ -120,12 +120,12 @@ def inference_vit(dataset: str,
             outputs = outputs.cpu().numpy()
             
             for output, image_name in zip(outputs, image_names):
-                save_path = os.path.join(output, f"{os.path.splitext(image_name)[0]}_pred")
+                save_path = os.path.join(output_path, f"{os.path.splitext(image_name)[0]}_pred")
                 np.save(save_path, output)
 
 @click.command(context_settings={'show_default': True})
 @click.argument('dataset', type=click.Path(exists=True))
-@click.option('--output', '-o', type=click.Path(), required=True, help='Directory to save the output .npy files')
+@click.option('--output_path', '-o', type=click.Path(), required=True, help='Directory to save the output .npy files')
 @click.option('--transform-min-scale', type=float, default=0.2, help='Minimum scale for data transformation')
 @click.option('--transform-normalize', type=bool, is_flag=True, default=False, help='Normalize the data during transformation')
 @click.option('--vit-model', type=str, default='ViT_L_16', help='ViT model type')
