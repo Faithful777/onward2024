@@ -17,13 +17,12 @@ class InferDataset(Dataset):
         # Resize
         resize = transforms.Resize(size=(224, 224))
         image = resize(image)
-
-
-        # Z-score normalization
-        image = TF.normalize(image, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         
         # Transform to tensor
         image = TF.to_tensor(image)
+
+        # Z-score normalization
+        image = TF.normalize(image, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         return image
 
     def __getitem__(self, index):
