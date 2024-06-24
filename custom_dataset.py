@@ -35,6 +35,9 @@ class MyDataset(Dataset):
             image = TF.vflip(image)
             mask = TF.vflip(mask)
 
+        # Z-score normalization
+        image = TF.normalize(image, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        
         # Transform to tensor
         image = TF.to_tensor(image)
         #mask = TF.to_tensor(mask)
