@@ -15,7 +15,7 @@ class InferDataset(Dataset):
 
     def transform(self, image, mask):
         # Resize
-        resize = transforms.Resize(size=(520, 520))
+        resize = transforms.Resize(size=(230, 230))
         image = resize(image)
         mask = resize(mask)
 
@@ -35,6 +35,10 @@ class InferDataset(Dataset):
             image = TF.vflip(image)
             mask = TF.vflip(mask)
 
+        # Z-score normalization
+        image = TF.normalize(image, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        mask = TF.normalize(mask, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        
         # Transform to tensor
         image = TF.to_tensor(image)
         #mask = TF.to_tensor(mask)
