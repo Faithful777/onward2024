@@ -3,7 +3,7 @@ import torchvision
 from torchvision import transforms
 from torch import nn
 from lightly.transforms.mae_transform import MAETransform
-from custom_dataset import MyDataset
+from inference_dataset import InferDataset
 from tqdm import tqdm
 import os
 import numpy as np
