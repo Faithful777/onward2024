@@ -84,7 +84,12 @@ def inference_vit(dataset: str,
     for name, param in checkpoint.items():
         if name in state_dict and state_dict[name].shape == param.shape:
             state_dict[name].copy_(param)
-    
+            print(f"Loaded {name} from checkpoint")
+        else:
+            print(f"Shape mismatch for {name}: expected {state_dict[name].shape}, got {param.shape}")
+    else:
+        print(f"Skipping {name} as it is not in the segmentation model")
+                      
     # Initialize neck and head
     neck = FPN(in_channels=[256, 384, 768, 768], out_channels=256, num_outs=4)
     head = SegformerHead(in_channels=[256, 256, 256, 256], channels=256, num_classes=num_classes, in_index=[0, 1, 2, 3], dropout_ratio=0.1, norm_cfg=dict(type='BN', requires_grad=True), align_corners=False)
