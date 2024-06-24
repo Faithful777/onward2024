@@ -6,6 +6,7 @@ from lightly.transforms.mae_transform import MAETransform
 from inference_dataset import InferDataset
 from tqdm import tqdm
 import os
+import click
 import numpy as np
 from segmentation import ConvMAE, FPN, SegformerHead, F
 
