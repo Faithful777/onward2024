@@ -9,6 +9,7 @@ from lightly.transforms.mae_transform import MAETransform
 import sys
 import os
 from dataset import ImageDataset
+from tqdm import tqdm
 import click
 import json
 import matplotlib.pyplot as plt
@@ -372,7 +373,7 @@ def pretrain_mae(dataset: str,
     print("Entering Training Loop")
     for epoch in range(total_epochs):
         total_loss = .0
-        for batch in dataloader:
+        for batch in tqdm(dataloader):
             views = batch[0]
             #print(f"this is views: {views}")
             #print(f"this is views[0]: {views[0].shape}")
