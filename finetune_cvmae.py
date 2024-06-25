@@ -273,7 +273,7 @@ def finetune_vit(dataset: str,
         main_scheduler.step()
         loss_history.update({epoch: {'loss': avg_loss.item(), 'base_lr': current_lr}})
     print("Training Completed")
-    torch.save(model.backbone.state_dict(), output)
+    torch.save(model.state_dict(), output)
     if shell_call:
         checkpoint_dir, checkpoint_name = os.path.split(output)
         report_path = checkpoint_dir + '/' + checkpoint_name.split('.')[0] + '_report.json'
