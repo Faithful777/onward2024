@@ -46,7 +46,7 @@ class SegmentationModel(nn.Module):
 
         return out
 
-def finetune_vit(dataset: str,
+def transfer_vit(dataset: str,
                  output: str = 'checkpoints/ViT_L_16_pretrained.pth',
                  transform_kwargs: dict = {'min_scale': 0.2, 'normalize': False},
                  vit_model: str = 'ViT_L_16', 
@@ -66,7 +66,7 @@ def finetune_vit(dataset: str,
                  freeze_backbone: bool = True,
                  shell_call: bool = False) -> dict:
     """
-    Fine-tune a Vision Transformer (ViT) model on a custom image dataset using a Masked Autoencoder (MAE) backbone.
+    Transfer a Vision Transformer (ViT) model on a custom image dataset using a Masked Autoencoder (MAE) backbone.
 
     Args:
         dataset (str): Path to the seismic dataset directory.
@@ -326,7 +326,7 @@ def main(dataset, output, transform_min_scale, transform_normalize, vit_model,
     transform_kwargs = {'min_scale': transform_min_scale, 'normalize': transform_normalize}
     optimizer_kwargs = {'lr': lr, **dict(optimizer_params)}
        
-    finetune_vit(dataset, 
+    transfer_vit(dataset, 
                  output, 
                  transform_kwargs=transform_kwargs,
                  vit_model=vit_model,
