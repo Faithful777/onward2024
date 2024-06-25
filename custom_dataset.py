@@ -15,7 +15,7 @@ class MyDataset(Dataset):
 
     def transform(self, image, mask):
         # Resize
-        resize = transforms.Resize(size=(520, 520))
+        resize = transforms.Resize(size=(230, 230))
         image = resize(image)
         mask = resize(mask)
 
