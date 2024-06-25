@@ -78,17 +78,6 @@ def inference_vit(dataset: str,
         fpn1_norm=fpn1_norm
     )
     
-    # Load weights into the model      
-    state_dict = backbone.state_dict()
-    checkpoint = torch.load(starting_weights, map_location=torch.device('cpu'))
-    for name, param in checkpoint.items():
-        if name in state_dict and state_dict[name].shape == param.shape:
-            state_dict[name].copy_(param)
-            print(f"Loaded {name} from checkpoint")
-        else:
-            print(f"Shape mismatch for {name}: expected {state_dict[name].shape}, got {param.shape}")
-    else:
-        print(f"Skipping {name} as it is not in the segmentation model")
                       
     # Initialize neck and head
     neck = FPN(in_channels=[256, 384, 768, 768], out_channels=256, num_outs=4)
@@ -103,6 +92,11 @@ def inference_vit(dataset: str,
     for name, param in checkpoint.items():
         if name in state_dict and state_dict[name].shape == param.shape:
             state_dict[name].copy_(param)
+            print(f"Loaded {name} from checkpoint")
+        else:
+            print(f"Shape mismatch for {name}: expected {state_dict[name].shape}, got {param.shape}")
+    else:
+        print(f"Skipping {name} as it is not in the segmentation model")
     
     transform = MAETransform(**transform_kwargs)
     
