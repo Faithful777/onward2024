@@ -16,7 +16,7 @@ import os
 import click
 import json
 import matplotlib.pyplot as plt
-from segmentation import ConvMAE, FPN, SegformerHead, F
+from segmentation_upernet import ConvMAE, FPN, SegformerHead, F
 from sklearn.model_selection import train_test_split
 
 class SegmentationModel(nn.Module):
