@@ -192,7 +192,7 @@ def transfer_vit(dataset: str,
     
     # Initialize head
     head = SegformerHead(
-        in_channels=[256, 256, 256, 256],
+        in_channels=256 #[256, 256, 256, 256],
         channels=256,
         num_classes=num_classes,
         in_index=[0, 1, 2, 3],
