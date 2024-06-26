@@ -1,5 +1,6 @@
 import torch
 import torchvision
+from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from torch import nn
 from torch.optim.lr_scheduler import CyclicLR, ConstantLR, SequentialLR, LinearLR
@@ -343,6 +344,16 @@ def pretrain_mae(dataset: str,
         return linear_scheduler, cyclic_scheduler
     
     transform = MAETransform(input_size=224,**transform_kwargs)
+    
+    # Data augmentation pipeline
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.RandomHorizontalFlip(),  # Randomly flip images horizontally
+        transforms.RandomVerticalFlip(),    # Randomly flip images vertically
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225])
+    ])
     
     # Loading unlabeled image dataset from folder
     dataset = torchvision.datasets.ImageFolder(root=dataset, transform=transform)
