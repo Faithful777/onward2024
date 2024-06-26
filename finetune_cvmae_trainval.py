@@ -177,10 +177,10 @@ def finetune_vit(dataset: str,
     
     # Initialize head
     head = SegformerHead(
-        in_channels=[256, 256, 256, 256],
+        in_channels=256, #[256, 256, 256, 256],
         channels=256,
         num_classes=num_classes,
-        in_index=[0, 1, 2, 3],
+        #in_index=4,#[0, 1, 2, 3],
         dropout_ratio=0.1,
         norm_cfg=dict(type='BN', requires_grad=True),
         align_corners=False
