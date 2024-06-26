@@ -8,7 +8,7 @@ import torch.utils.checkpoint as checkpoint
 from mmcv.cnn import ConvModule
 
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
-from from mmseg.models.decode_heads.psp_head import PPM
+from mmseg.models.decode_heads.psp_head import PPM
 
 #from mmseg.registry import MODELS
 from utils import resize
