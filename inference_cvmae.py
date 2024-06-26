@@ -8,7 +8,7 @@ from tqdm import tqdm
 import os
 import click
 import numpy as np
-from segmentation import ConvMAE, FPN, SegformerHead, F
+from segmentation_upernet import ConvMAE, FPN, SegformerHead, F
 
 class SegmentationModel(nn.Module):
     def __init__(self, backbone, neck, decode_head):
@@ -81,8 +81,19 @@ def inference_vit(dataset: str,
                       
     # Initialize neck and head
     neck = FPN(in_channels=[256, 384, 768, 768], out_channels=256, num_outs=4)
-    head = SegformerHead(in_channels=[256, 256, 256, 256], channels=256, num_classes=num_classes, in_index=[0, 1, 2, 3], dropout_ratio=0.1, norm_cfg=dict(type='BN', requires_grad=True), align_corners=False)
-    
+    #head = SegformerHead(in_channels=[256, 256, 256, 256], channels=256, num_classes=num_classes, in_index=[0, 1, 2, 3], dropout_ratio=0.1, norm_cfg=dict(type='BN', requires_grad=True), align_corners=False)
+
+    # Initialize head
+    head = SegformerHead(
+        in_channels=256, #[256, 256, 256, 256],
+        channels=256,
+        num_classes=num_classes,
+        #in_index=4,#[0, 1, 2, 3],
+        dropout_ratio=0.1,
+        norm_cfg=dict(type='BN', requires_grad=True),
+        align_corners=False
+    )
+                      
     # Combine to create the segmentation model
     model = SegmentationModel(backbone, neck, head)
 
