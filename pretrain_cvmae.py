@@ -388,7 +388,7 @@ def pretrain_mae(dataset: str,
             views = batch[0]
             #print(f"this is views: {views}")
             #print(f"this is views[0]: {views[0].shape}")
-            images = views[0].to(device)  # views contains only a single view
+            images = views.to(device)  # views contains only a single view
             #_, predictions, targets = model(images)
             #loss = criterion(predictions, targets)
             loss, _, _ = model(images)
